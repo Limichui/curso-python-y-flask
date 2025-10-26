@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #fafafa;
@@ -31,7 +35,6 @@ input {
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
-    margin-bottom: 16px;
 }
 
 button {

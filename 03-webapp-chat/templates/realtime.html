@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Avanzado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+</head>
+<body>
+    <h1>Chat Avanzado</h1>
+    <form id="formulario_mensaje">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" value="{{ nombre }}" required>
+
+        <label for="nuevo_mensaje">Nuevo Mensaje:</label>
+        <input type="text" id="nuevo_mensaje" name="nuevo_mensaje">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <ul id="lista_mensajes">
+    {% for mensaje in mensajes %}
+        <li>{{ mensaje }}</li>
+    {% endfor %}
+    </ul>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() { // Asegura que el DOM esté cargado
+        var socket = io.connect('http://' + document.domain + ':' + location.port); // Conexión al servidor Socket.IO
+
+        socket.on('actualizar_mensajes', function(data) { // Escucha el evento 'actualizar_mensajes' desde el servidor
+            var listaMensajes = document.getElementById('lista_mensajes'); // Obtiene la lista de mensajes
+            var nuevoMensaje = document.createElement('li'); // Crea un nuevo elemento de lista
+            nuevoMensaje.textContent = data.nombre + ': ' + data.mensaje; // Establece el contenido del nuevo mensaje y el nombre
+            listaMensajes.appendChild(nuevoMensaje); // Agrega el nuevo mensaje a la lista
+        });
+
+        var formulario = document.getElementById('formulario_mensaje'); // Obtiene el formulario de mensajes
+        formulario.addEventListener('submit', function(event) { // Escucha el evento de envío
+            event.preventDefault(); // Previene el comportamiento por defecto del formulario
+            var nombre = document.getElementById('nombre').value; // Obtiene el valor del campo de nombre
+            var nuevo_mensaje = document.getElementById('nuevo_mensaje').value; // Obtiene el valor del campo de nuevo mensaje
+            socket.emit('mensaje', { 'nombre': nombre, 'mensaje': nuevo_mensaje }); // Envía el nuevo mensaje al servidor
+            document.getElementById('nuevo_mensaje').value = ''; // Limpia el campo de nuevo mensaje
+        });
+
+    });
+</script>
+</html>
