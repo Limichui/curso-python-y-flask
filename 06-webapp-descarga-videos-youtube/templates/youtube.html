@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar video de Youtube</title>
+</head>
+<body>
+    <h1>Descargar video de Youtube</h1>
+    <form action="" method="post">
+        <label for="url">Ingrese la URL del video de Youtube:</label><br>
+        <input type="text" id="url" name="url" placeholder=""><br><br>
+        <input type="submit" value="Descargar">
+    </form>
+    {% if mensaje %}
+        <p>{{ mensaje }}</p>
+    {% endif %}
+</body>
+</html>
